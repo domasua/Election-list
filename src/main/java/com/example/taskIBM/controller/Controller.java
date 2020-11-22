@@ -22,7 +22,8 @@ public class Controller {
     @Autowired
     private RestTemplate restTemplate;
 
-    @GetMapping("/election")
+    // sorting by date 2016, 2017 and etc
+    @GetMapping("/election/sort")
     public List<Data> getElection(@RequestParam(defaultValue = "false") boolean sorted){
         log.info("received para sorted " + sorted);
         ElectionData electionData = restTemplate.getForObject(
@@ -33,6 +34,17 @@ public class Controller {
                 sorted(Comparator.comparing(Data::getRink_data)).collect(Collectors.toList());
 
         return sortedElectionList;
+
+    }
+
+    @GetMapping("/election/")
+    public List<Data> getElectionByData(@RequestParam(defaultValue = "false") boolean sorted){
+        log.info("received para sorted " + sorted);
+        ElectionData electionData = restTemplate.getForObject(
+                url, ElectionData.class);
+
+
+        return electionData.getData();
 
     }
 
